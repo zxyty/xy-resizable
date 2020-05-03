@@ -20,7 +20,8 @@ interface ResizableProps {
     currDom: HTMLElement
   ) => void;
   // 是否resize的同时修改dom size
-  enableResizing?: boolean;
+  enableResizing?: boolean; // enableResizing 开启时，enableAutoResize也将为true
+  enableAutoResize?: boolean; // 是否resize后直接修改style生效 默认为true
 
   children?: React.ReactNode;
 }
@@ -143,7 +144,7 @@ export default class Resizable extends React.PureComponent<ResizableProps> {
     type: "mouseMove" | "mouseUp"
   ) => {
     const { clientX: endX, clientY: endY } = ev;
-    const { showGuideLine, onResizeEnd, enableResizing } = this.props;
+    const { showGuideLine, onResizeEnd, enableResizing, enableAutoResize = true } = this.props;
 
     if (showGuideLine) {
       this._showGuideLine(direction, endX, endY);
@@ -166,7 +167,9 @@ export default class Resizable extends React.PureComponent<ResizableProps> {
         this._resizeDom(changeX, changeY);
       }
     } else {
-      this._resizeDom(changeX, changeY);
+      if (enableAutoResize) {
+        this._resizeDom(changeX, changeY);
+      }
       if (onResizeEnd) {
         onResizeEnd(
           changeX,

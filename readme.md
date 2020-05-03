@@ -28,7 +28,8 @@ interface ResizeableProps {
     currDom: HTMLElement
   ) => void;
   // 是否resize的同时修改dom size
-  enableResizing?: boolean;
+  enableResizing?: boolean; // enableResizing 开启时，enableAutoResize也将为true
+  enableAutoResize?: boolean; // 是否resize后直接修改style生效 默认为true
 
   children?: React.ReactNode;
 }
